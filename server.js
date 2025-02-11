@@ -1,10 +1,10 @@
-// server.js
+// api/index.js
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const authRoutes = require('./routes/authRoutes');
-const registrationRoutes = require('./routes/registrationRoutes');
+const authRoutes = require('../routes/authRoutes');
+const registrationRoutes = require('../routes/registrationRoutes');
 
 dotenv.config();
 const app = express();
@@ -19,7 +19,13 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api/auth', authRoutes);
 app.use('/api/register', registrationRoutes);
 
-const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// For Vercel, we need to export the app
+module.exports = app;
+
+// Only listen to port if running directly (not on Vercel)
+if (require.main === module) {
+  const PORT = process.env.PORT || 5001;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
