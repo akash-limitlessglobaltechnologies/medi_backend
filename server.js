@@ -37,6 +37,11 @@ const connectDB = async () => {
 
 connectDB();
 
+// Root route
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Welcome to the API' });
+});
+
 // Health check endpoint for Vercel
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'OK' });
